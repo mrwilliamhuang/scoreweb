@@ -8,7 +8,6 @@ import { MatCardModule } from '@angular/material/card';
   standalone: true,
   imports: [CommonModule, StudentListComponent, MatCardModule],
   template: `
-    <h1>学生成绩表</h1>
     <app-student-list />
   `,
   styles: [`
