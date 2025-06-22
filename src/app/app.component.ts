@@ -1,21 +1,24 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { StudentListComponent } from './student/student-list.component';
-import { MatCardModule } from '@angular/material/card';
+import { AuthService } from './auth/auth.service';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, StudentListComponent, MatCardModule],
+  imports: [RouterModule],
   template: `
-    <app-student-list />
+    <main>
+      <section class="brand-name">
+        <h1>欢迎使用学生管理系统</h1>
+      </section>
+      <router-outlet></router-outlet>
+    </main>
   `,
-  styles: [`
-    h1 {
-      color: #333;
-      text-align: center;
-      padding: 1rem 0;
-    }
-  `]
+  styles: []
 })
-export class AppComponent {}
+export class AppComponent {
+  constructor(private authService: AuthService, private router: Router) {
+    // 强制导航到登录页
+    this.router.navigateByUrl('/login');
+  }
+}
