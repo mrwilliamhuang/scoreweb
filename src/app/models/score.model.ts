@@ -1,8 +1,6 @@
-import { Student } from '../models/score.model';
-
 export interface Score {
   studentId: string;
-  type: string;
   subject: string;
+  type: string;
   score: number;
 }

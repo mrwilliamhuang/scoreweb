@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Student } from '../models/score.model';
+import { Student } from '@app/models';
 import { STUDENTS } from '../student/mock-students';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private loggedInStudent: any = null;
+  private loggedInStudent: Student | null = null;
 
   login(studentId: string, password: string): Student | null {
     const student = STUDENTS.find((s: Student) => s.studentId === studentId && s.password === password);
@@ -21,7 +21,7 @@ export class AuthService {
     return !!this.loggedInStudent;
   }
 
-  getLoggedInStudent(): any {
+  getLoggedInStudent(): Student | null {
     return this.loggedInStudent;
   }
 

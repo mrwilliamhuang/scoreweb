@@ -1,2 +1,6 @@
-// 导出 score.model 中的所有类型
+/**
+ * 模块入口文件
+ * 此文件用于重新导出模块中的所有公共接口和类型
+ */
 export * from './score.model';
+export * from './student.model';

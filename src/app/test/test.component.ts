@@ -11,4 +11,6 @@ import { Component } from '@angular/core';
   `,
   styles: []
 })
-export class TestComponent {}
+export class TestComponent {
+
+}
