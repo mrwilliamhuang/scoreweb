@@ -2,12 +2,13 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MaterialModule } from './shared/material/material.module';
 
 @NgModule({
   imports: [
     BrowserModule,
     AppRoutingModule,
-    AppComponent  // 改为导入而不是声明
+    MaterialModule
   ],
   bootstrap: [AppComponent]
 })
