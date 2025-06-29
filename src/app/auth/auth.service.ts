@@ -1,20 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Student } from '@app/models';
-import { STUDENTS } from '../student/mock-students';
+import { ApiService } from '@app/core/services/api.service';
+import { Router } from '@angular/router';
+import { Student } from '@app/models';  // 添加这行导入
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  private loggedInStudent: Student | null = null;
+  private loggedInStudent: any = null;
 
-  login(studentId: string, password: string): Student | null {
-    const student = STUDENTS.find((s: Student) => s.studentId === studentId && s.password === password);
-    if (student) {
-      this.loggedInStudent = student;
-      return student;
+  constructor(private apiService: ApiService, private router: Router) {}
+
+  async login(studentId: string, password: string): Promise<boolean> {
+    try {
+      const response = await this.apiService.login(studentId, password).toPromise();
+      this.loggedInStudent = response;
+      return true;
+    } catch (error) {
+      return false;
     }
-    return null;
   }
 
   isLoggedIn(): boolean {

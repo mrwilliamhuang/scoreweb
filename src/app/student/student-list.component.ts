@@ -5,8 +5,10 @@ import { MatSortModule, MatSort } from '@angular/material/sort';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
-import { SCORES } from './mock-scores';
+// 删除这行 ↓
+// import { SCORES } from './mock-scores';
 import { Score } from '../models/score.model';
+import { ApiService } from '@app/core/services/api.service';
 
 @Component({
   selector: 'app-student-list',
@@ -63,13 +65,18 @@ export class StudentListComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService, 
+    private router: Router,
+    private apiService: ApiService
+  ) {
     const student = this.authService.getLoggedInStudent();
     if (!student) {
       this.router.navigate(['/login']);
     } else {
-      // 只显示当前学生成绩
-      this.dataSource.data = SCORES.filter(s => s.studentId === student.studentId);
+      this.apiService.getStudentScores(student.studentId).subscribe(scores => {
+        this.dataSource.data = scores;
+      });
     }
   }
 

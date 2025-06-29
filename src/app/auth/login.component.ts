@@ -75,9 +75,9 @@ export class LoginComponent {
     });
   }
 
-  onLogin(): void {
+  async onLogin(): Promise<void> {
     const { username, password } = this.loginForm.value;
-    if (this.authService.login(username, password)) {
+    if (await this.authService.login(username, password)) {
       this.router.navigate(['/students']);
     } else {
       alert('登录失败，请检查用户名和密码');
