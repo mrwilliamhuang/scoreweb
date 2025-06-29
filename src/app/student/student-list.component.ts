@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatPaginatorModule, MatPaginator } from '@angular/material/paginator';
 import { MatSortModule, MatSort } from '@angular/material/sort';
@@ -58,7 +58,7 @@ import { ApiService } from '@app/core/services/api.service';
     }
   `]
 })
-export class StudentListComponent implements AfterViewInit {
+export class StudentListComponent implements OnInit, AfterViewInit { // 实现接口
   displayedColumns = ['studentId', 'subject', 'type', 'score'];
   dataSource = new MatTableDataSource<Score>([]);
 
@@ -69,14 +69,18 @@ export class StudentListComponent implements AfterViewInit {
     private authService: AuthService, 
     private router: Router,
     private apiService: ApiService
-  ) {
+  ) {}
+
+  ngOnInit(): void { // 添加返回类型
     const student = this.authService.getLoggedInStudent();
-    if (!student) {
-      this.router.navigate(['/login']);
+    if (student?.scores) {
+      this.dataSource.data = student.scores.map((score: Score) => ({
+        ...score,
+        studentId: student.studentId // 确保每个score都有studentId
+      }));
     } else {
-      this.apiService.getStudentScores(student.studentId).subscribe(scores => {
-        this.dataSource.data = scores;
-      });
+      console.warn('未找到成绩数据或用户未登录');
+      this.dataSource.data = [];
     }
   }
 

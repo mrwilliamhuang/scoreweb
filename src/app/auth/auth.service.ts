@@ -1,20 +1,38 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ApiService } from '@app/core/services/api.service';
 import { Router } from '@angular/router';
-import { Student } from '@app/models';  // 添加这行导入
+import { lastValueFrom } from 'rxjs';
+import { Student, Score } from '@app/models'; // 确保正确导入
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private loggedInStudent: any = null;
+  private loggedInStudent: Student | null = null;
 
   constructor(private apiService: ApiService, private router: Router) {}
 
   async login(studentId: string, password: string): Promise<boolean> {
     try {
-      const response = await this.apiService.login(studentId, password).toPromise();
-      this.loggedInStudent = response;
+      const response = await lastValueFrom(
+        this.apiService.login(studentId, password)
+      );
+      
+      if (!response?.scores) {
+        throw new Error('未获取到成绩数据');
+      }
+      
+      this.loggedInStudent = {
+        name: response.name,
+        studentId: response.student_id,
+        scores: response.scores.map((s: any) => ({
+          ...s,
+          studentId: response.student_id
+        }))
+      };
+      
       return true;
     } catch (error) {
+      console.error('登录失败:', error);
       return false;
     }
   }
@@ -24,7 +42,7 @@ export class AuthService {
   }
 
   getLoggedInStudent(): Student | null {
-    return this.loggedInStudent;
+    return this.loggedInStudent ? { ...this.loggedInStudent } : null;
   }
 
   logout(): void {
