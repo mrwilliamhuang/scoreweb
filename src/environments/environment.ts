@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:5000' // 确保端口与Flask后端一致(默认5000)
+  apiUrl: 'http://6947682c.r3.cpolar.cn' // 确保端口与Flask后端一致(默认5000)
 };

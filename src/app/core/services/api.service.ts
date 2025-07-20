@@ -7,7 +7,7 @@ import { Score } from '@app/models';
   providedIn: 'root'
 })
 export class ApiService {
-  private apiUrl = 'http://localhost:5000';
+  private apiUrl = '/api';
 
   constructor(private http: HttpClient) {
     // 添加调试信息
